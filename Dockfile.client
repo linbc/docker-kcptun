@@ -1,5 +1,5 @@
 #
-# Dockerfile for kcptun-server
+# Dockerfile for kcptun-client
 #
 
 FROM alpine
@@ -15,22 +15,20 @@ RUN curl -sSL $KCPTUN_URL | tar xz
 RUN chmod +x ./* && mv ./* /usr/local/bin 
 RUN apk del curl
 
-ENV TARGET_ADDR 127.0.0.1
-ENV TARGET_PORT 1080
+ENV TARGET_ADDR 159.75.10.171
+ENV TARGET_PORT 38010
 ENV LISTEN_ADDR 0.0.0.0
-ENV LISTEN_PORT 31080
+ENV LISTEN_PORT 18010
 ENV MODE fast2
 ENV CRYPT none
-ENV KEY Asdf.1234
 ENV MTU 1350
 ENV SNDWND 512
 ENV RCVWND 512
 
-EXPOSE $LISTEN_PORT/udp
+EXPOSE $LISTEN_PORT/tcp
 
-CMD server_linux_amd64 -l $LISTEN_ADDR:$LISTEN_PORT \
+CMD client_linux_amd64 -l $LISTEN_ADDR:$LISTEN_PORT \
                        -t $TARGET_ADDR:$TARGET_PORT \
-                       --key $KEY \
                        --crypt $CRYPT \
                        --mode $MODE \
                        --mtu $MTU \
